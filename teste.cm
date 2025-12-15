@@ -20,11 +20,3 @@ void main(void) {
     
     output(x); /* Deve continuar imprimindo 10 (o global não foi alterado pela funcaoTeste) */
 }
-
-/*
-int main(void) {
-    int x;
-    x = 5;
-    return x;
-}
-*/
