@@ -1,0 +1,30 @@
+int x; /* Variável GLOBAL */
+int y;
+
+void funcaoTeste(void) {
+    int x; /* Variável LOCAL (deve ocultar a global) */
+    
+    x = 55;
+    output(x); /* Deve imprimir 55 */
+}
+
+void main(void) {
+    int i;
+    
+    x = 10; /* Acessando o x GLOBAL */
+    y = 20;
+    
+    output(x); /* Deve imprimir 10 */
+    
+    funcaoTeste(); /* Dentro desta função, o x é local */
+    
+    output(x); /* Deve continuar imprimindo 10 (o global não foi alterado pela funcaoTeste) */
+}
+
+/*
+int main(void) {
+    int x;
+    x = 5;
+    return x;
+}
+*/
