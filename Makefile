@@ -49,4 +49,18 @@ lex.yy.c: cminus.l cminus.tab.h
 clean:
 	rm -f $(TARGET) $(OBJS) lex.yy.c cminus.tab.c cminus.tab.h
 
+# Compilacao cruzada para Windows
+windows: CC = x86_64-w64-mingw32-gcc
+windows: CFLAGS = -Wall -Wno-unused-function -O2
+windows: TARGET = cminus.exe
+windows: clean-windows $(TARGET)
+	@echo "Executavel Windows criado: $(TARGET)"
+	@mkdir -p dist
+	@cp $(TARGET) dist/
+	@cp teste*.cm dist/ 2>/dev/null || true
+	@echo "Arquivos copiados para dist/"
+
+clean-windows:
+	rm -f cminus.exe *.o lex.yy.c cminus.tab.c cminus.tab.h dist/cminus.exe
+
 .PHONY: all clean
