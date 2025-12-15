@@ -1,0 +1,27 @@
+/* Teste com estruturas de controle (if-else, while) */
+
+int fatorial(int n) {
+    int resultado;
+    int i;
+    
+    if (n <= 1) {
+        return 1;
+    } else {
+        resultado = 1;
+        i = 2;
+        while (i <= n) {
+            resultado = resultado * i;
+            i = i + 1;
+        }
+        return resultado;
+    }
+}
+
+void main(void) {
+    int valor;
+    int fat;
+    
+    valor = 5;
+    fat = fatorial(valor);
+    output(fat);  /* Deve calcular 5! = 120 */
+}

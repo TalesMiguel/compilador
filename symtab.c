@@ -59,6 +59,21 @@ void st_pop_scope(void) {
 }
 
 /**
+ * @brief Entra em um escopo existente sem criar novo
+ * @param scopeName Nome do escopo a entrar
+ */
+void st_enter_scope(char* scopeName) {
+    ScopeList scope = allScopes;
+    while (scope != NULL) {
+        if (strcmp(scope->scopeName, scopeName) == 0 && scope->parent == scopeStack) {
+            scopeStack = scope;
+            return;
+        }
+        scope = scope->next;
+    }
+}
+
+/**
  * @brief Insere um simbolo no escopo atual
  * @param name Nome do identificador
  * @param type Tipo do identificador
@@ -116,6 +131,8 @@ void st_insert(char* name, ExpType type, int lineno, int memloc) {
 BucketList st_lookup(char* name) {
     ScopeList scope = scopeStack;
     int h = hash(name);
+    
+    // Primeiro busca na pilha de escopos ativos
     while (scope != NULL) {
         BucketList l = scope->hashTable[h];
         while ((l != NULL) && (strcmp(name, l->name) != 0))
@@ -124,6 +141,22 @@ BucketList st_lookup(char* name) {
             return l;
         scope = scope->parent;
     }
+    
+    // Se nao encontrou, busca em todos os escopos preservados
+    // Isso e necessario durante typeCheck quando escopos sao recriados
+    scope = allScopes;
+    while (scope != NULL) {
+        // Verifica se este escopo tem o nome correspondente ao escopo atual
+        if (scopeStack != NULL && strcmp(scope->scopeName, scopeStack->scopeName) == 0) {
+            BucketList l = scope->hashTable[h];
+            while ((l != NULL) && (strcmp(name, l->name) != 0))
+                l = l->next;
+            if (l != NULL)
+                return l;
+        }
+        scope = scope->next;
+    }
+    
     return NULL;
 }
 

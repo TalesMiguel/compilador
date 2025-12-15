@@ -1,0 +1,20 @@
+/* Teste de com erros semânticos */
+
+int funcaoComErros(void) {
+    int x;
+    int x;  /* ERRO: Redeclaração de variável no mesmo escopo */
+    
+    y = 10;  /* ERRO: Variável 'y' não declarada */
+    
+    x = funcaoInexistente();  /* ERRO: Função não declarada */
+    
+    return x;
+}
+
+void main(void) {
+    int a;
+    void b;  /* ERRO: Variável declarada com tipo void */
+    
+    a = 5;
+    output(a);
+}

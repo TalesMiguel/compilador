@@ -1,0 +1,16 @@
+/* Teste com arrays */
+int vetor[10];
+
+void main(void) {
+    int i;
+    
+    i = 0;
+    while (i < 5) {
+        vetor[i] = i * 2;
+        i = i + 1;
+    }
+    
+    output(vetor[0]);  /* Deve imprimir 0 */
+    output(vetor[2]);  /* Deve imprimir 4 */
+    output(vetor[4]);  /* Deve imprimir 8 */
+}

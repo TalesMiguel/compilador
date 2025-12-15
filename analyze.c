@@ -153,6 +153,12 @@ void buildSymtab(TreeNode* syntaxTree) {
 static void setNodeTypes(TreeNode* t) {
     if (t == NULL)
         return;
+    
+    // Entra no escopo existente ao processar funcao
+    if (t->nodekind == DeclK && t->kind.decl == FunK) {
+        st_enter_scope(t->attr.name);
+    }
+    
     switch (t->nodekind) {
         case ExpK:
             switch (t->kind.exp) {
@@ -193,10 +199,13 @@ static void setNodeTypes(TreeNode* t) {
 }
 
 /**
- * @brief Verifica tipos de um no
+ * @brief Verifica tipos e desempilha escopos
  * @param t No da arvore
  */
 static void checkNode(TreeNode* t) {
+    if (t == NULL)
+        return;
+    
     switch (t->nodekind) {
         case StmtK:
             switch (t->kind.stmt) {
@@ -288,6 +297,11 @@ static void checkNode(TreeNode* t) {
         default:
             break;
     }
+    
+    // Desempilha escopo ao sair de funcao
+    if (t->nodekind == DeclK && t->kind.decl == FunK) {
+        st_pop_scope();
+    }
 }
 
 /**
@@ -295,8 +309,7 @@ static void checkNode(TreeNode* t) {
  * @param syntaxTree Raiz da arvore sintatica
  */
 void typeCheck(TreeNode* syntaxTree) {
-    traverse(syntaxTree, setNodeTypes, nullProc);
-    traverse(syntaxTree, checkNode, nullProc);
+    traverse(syntaxTree, setNodeTypes, checkNode);
     BucketList mainFunc = st_lookup("main");
     if (mainFunc == NULL) {
         fprintf(stderr, "ERRO SEMANTICO: Funcao 'main' nao foi declarada no programa.\n");

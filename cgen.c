@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "cgen.h"
 #include "cminus.tab.h"
+#include <stdlib.h>
 
 static int tempCount = 0;
 static int labelCount = 0;
@@ -19,7 +20,7 @@ static void cGenExpStmt(TreeNode* tree);
  * @return Nome da variavel temporaria
  */
 static char* newTemp(void) {
-    static char tempName[10];
+    char* tempName = (char*)malloc(10 * sizeof(char));
     sprintf(tempName, "t%d", tempCount++);
     return tempName;
 }
@@ -29,7 +30,7 @@ static char* newTemp(void) {
  * @return Nome do label
  */
 static char* newLabel(void) {
-    static char labelName[10];
+    char* labelName = (char*)malloc(10 * sizeof(char));
     sprintf(labelName, "L%d", labelCount++);
     return labelName;
 }

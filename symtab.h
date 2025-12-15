@@ -67,6 +67,12 @@ BucketList st_lookup(char* name);
 BucketList st_lookup_top(char* name);
 
 /**
+ * @brief Entra em um escopo existente sem criar novo
+ * @param scopeName Nome do escopo a entrar
+ */
+void st_enter_scope(char* scopeName);
+
+/**
  * @brief Imprime a tabela de simbolos completa
  */
 void printSymTab(void);
